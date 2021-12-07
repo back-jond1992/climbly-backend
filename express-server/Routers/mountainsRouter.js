@@ -1,6 +1,6 @@
 const express = require("express");
 const mountainsRouter = express.Router();
-const {getAllMountains} = require('../Controller/mountains')
+const {getAllMountains} = require('../Controllers/mountains')
 
 mountainsRouter.route('/').get(getAllMountains)
 

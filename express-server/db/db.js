@@ -5,6 +5,7 @@ require('dotenv').config({
     path: '../.env.dev'
 })
 
+
 const serviceAccount = {
     "type": "service_account",
     "project_id": "hills-app-test-db",

@@ -1,7 +1,7 @@
 const express = require("express");
 const apiRouter = express.Router();
 const {mountainsRouter} = require('../Routers/mountainsRouter')
-const {getAPIDescription} = require('../Controller/description-controller.js')
+const {getAPIDescription} = require('../Controllers/description-controller.js')
 
 
 
