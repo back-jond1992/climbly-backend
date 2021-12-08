@@ -1,3 +1,5 @@
-let mountainCollection = 'test-mountains';
+let mountainCollection = "test-mountains";
 
-module.exports = mountainCollection
+let userCollection = "test-users";
+
+module.exports = { mountainCollection, userCollection };
