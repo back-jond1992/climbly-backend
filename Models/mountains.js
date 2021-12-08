@@ -1,5 +1,5 @@
 const db = require("../db/db");
-const mountainCollection = require('../database-variable')
+const {mountainCollection} = require('../database-variable')
 
 fetchAllMountains = (sortBy = "hillname", orderBy = "ASC") => {
   if(sortBy !== 'hillname' && sortBy !== 'feet' && sortBy !== 'metres' ) {

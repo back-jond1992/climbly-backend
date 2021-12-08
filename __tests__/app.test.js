@@ -2,7 +2,6 @@ const db = require("../db/db");
 const express = require("express");
 const request = require("supertest");
 const app = require("../app");
-const { describe } = require("jest-circus");
 
 describe("Mountains API Tests", () => {
   describe("mountain endpoints", () => {
@@ -140,9 +139,9 @@ describe("Mountains API Tests", () => {
       });
     });
     describe("POST /api/users/:userToken happy path", () => {
-      it.only("Status 200: returns new user", () => {
+      it("Status 200: returns new user", () => {
         return request(app)
-          .post("/api/users/user2")
+          .post("/api/users/user3")
           .expect(201)
           .then(({ body }) => {
             expect(body.user).toEqual({
@@ -153,6 +152,29 @@ describe("Mountains API Tests", () => {
             });
           });
       });
-    });
+    })
+    describe('PATCH /api/users/:userToken happy path', () => {
+        it('Status 201: Patches the user object with the new data', () => {
+            const testObject = {
+                userToken: "user2",
+                totalFeetClimbed: 1000,
+                noOfHillsClimbed: 2,
+                hillsClimbed: ['Ben Nevis', 'Skiddaw'],
+              }
+            return request(app)
+          .patch("/api/users/user2")
+          .send(testObject)
+          .expect(201)
+          .then(({ body }) => {
+            expect(body.user).toEqual({
+              userToken: "user2",
+              totalFeetClimbed: 0,
+              noOfHillsClimbed: 0,
+              hillsClimbed: [],
+            });
+          });
+        })
+
+    })
   });
 });

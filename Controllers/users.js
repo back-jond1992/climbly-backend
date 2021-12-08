@@ -1,4 +1,4 @@
-const { fetchUser, addUser } = require("../Models/users");
+const { fetchUser, addUser, updateUser } = require("../Models/users");
 
 const getUser = (req, res, next) => {
   const userToken = req.params;
@@ -18,4 +18,14 @@ const postUser = (req, res, next) => {
     .catch(next);
 };
 
-module.exports = { getUser, postUser };
+const patchUser = (req, res, next) => {
+  const {body} = req 
+  const user = req.params
+  updateUser(body, user).then((res)=> {
+
+  })
+}
+
+
+
+module.exports = { getUser, postUser, patchUser };
