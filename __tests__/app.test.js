@@ -6,12 +6,13 @@ const app = require("../app");
 describe("Mountains API Tests", () => {
   describe("mountain endpoints", () => {
     describe("/api/mountains happy path", () => {
-      it("Status 200: GET returns all mountains data", () => {
+      it.only("Status 200: GET returns all mountains data", () => {
         return request(app)
           .get("/api/mountains")
           .expect(200)
           .then(({ body }) => {
-            expect(body.mountains.length).toBe(8);
+            console.log(body.mountains[9]);
+            expect(body.mountains.length).toBe(10);
           });
       });
       it("Status 200: GET sorts all mountain data", () => {
@@ -152,29 +153,60 @@ describe("Mountains API Tests", () => {
             });
           });
       });
-    })
-    describe('PATCH /api/users/:userToken happy path', () => {
-        it.skip('Status 201: Patches the user object with the new data', () => {
-            const testObject = {
-                userToken: "user2",
-                totalFeetClimbed: 1000,
-                noOfHillsClimbed: 2,
-                hillsClimbed: ['Ben Nevis', 'Skiddaw'],
-              }
-            return request(app)
-          .patch("/api/users/user2")
+    });
+    describe("PATCH /api/users/:userToken happy path", () => {
+      it("Status 200: Patches the user object with the new data", () => {
+        const testObject = {
+          userToken: "user4",
+          totalFeetClimbed: 2000,
+          noOfHillsClimbed: 3,
+          hillsClimbed: ["Ben Nevis", "Snowdonia", "Skiddaw"],
+        };
+        return request(app)
+          .patch("/api/users/user4")
           .send(testObject)
-          .expect(201)
+          .expect(200)
           .then(({ body }) => {
             expect(body.user).toEqual({
-              userToken: "user2",
-              totalFeetClimbed: 0,
-              noOfHillsClimbed: 0,
-              hillsClimbed: [],
+              userToken: "user4",
+              totalFeetClimbed: 2000,
+              noOfHillsClimbed: 3,
+              hillsClimbed: ["Ben Nevis", "Snowdonia", "Skiddaw"],
             });
           });
-        })
-
-    })
+      });
+    });
+    describe("PATCH /api/users/:userToken Sad path", () => {
+      it("Status 404: return entry not found msg", () => {
+        const testObject = {
+          userToken: "user6",
+          totalFeetClimbed: 1000,
+          noOfHillsClimbed: 2,
+          hillsClimbed: ["Ben Nevis", "Skiddaw"],
+        };
+        return request(app)
+          .patch("/api/users/user6")
+          .send(testObject)
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toEqual("Entry not found");
+          });
+      });
+      it("Status 404: return entry not found msg", () => {
+        const testObject = {
+          userToken: "user3",
+          totalFeetClimbed: 1000,
+          noOfHillsClimbed: 2,
+          hillsClimbed: ["Ben Nevis", "Skiddaw"],
+        };
+        return request(app)
+          .patch("/api/users/user2")
+          .send(testObject)
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toEqual("User token does not match");
+          });
+      });
+    });
   });
 });

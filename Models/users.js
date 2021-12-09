@@ -38,4 +38,34 @@ const addUser = (user) => {
     });
 };
 
-module.exports = { fetchUser, addUser };
+const updateUser = (body, user) => {
+  const { userToken } = user;
+  if (body.userToken !== user.userToken) {
+    return Promise.reject({ status: 400, msg: "User token does not match" });
+  }
+  return db
+    .collection(`${userCollection}`)
+    .where("userToken", "==", userToken)
+    .get()
+    .then((res) => {
+      if (!res.docs[0]) {
+        return Promise.reject({ status: 404, msg: "Entry not found" });
+      } else {
+        return db
+          .collection(`${userCollection}`)
+          .doc(`${userToken}`)
+          .set(body)
+          .then(() => {
+            return db
+              .collection(`${userCollection}`)
+              .where("userToken", "==", userToken)
+              .get()
+              .then((res) => {
+                return res.docs[0].data();
+              });
+          });
+      }
+    });
+};
+
+module.exports = { fetchUser, addUser, updateUser };

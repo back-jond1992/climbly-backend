@@ -1,17 +1,19 @@
 const db = require("../db/db");
-const {mountainCollection} = require('../database-variable')
+const { mountainCollection } = require("../database-variable");
 
-fetchAllMountains = (sortBy = "hillname", orderBy = "ASC") => {
-  if(sortBy !== 'hillname' && sortBy !== 'feet' && sortBy !== 'metres' ) {
-    return Promise.reject({status: 400, msg: 'Bad query'})
+fetchAllMountains = (sortBy = "hillname", orderBy = "ASC", startAt = 180) => {
+  if (sortBy !== "hillname" && sortBy !== "feet" && sortBy !== "metres") {
+    return Promise.reject({ status: 400, msg: "Bad query" });
   }
-  if(orderBy !== 'ASC' && orderBy !== 'DESC' ) {
-    return Promise.reject({status: 400, msg: 'Bad query'})
+  if (orderBy !== "ASC" && orderBy !== "DESC") {
+    return Promise.reject({ status: 400, msg: "Bad query" });
   }
+
   return db
-
     .collection(`${mountainCollection}`)
+    .where("hillnumber", "==", startAt)
     .orderBy(sortBy, orderBy)
+    .limit(10)
     .get()
     .then((res) => {
       const mountains = [];
@@ -30,8 +32,8 @@ fetchMountainsByHillNumber = (hill) => {
     .get()
     .then((res) => {
       if (!res.docs[0]) {
-        return Promise.reject({status: 404, msg: 'Entry not found'})
-      }   
+        return Promise.reject({ status: 404, msg: "Entry not found" });
+      }
       return res.docs[0].data();
     });
 };

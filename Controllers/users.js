@@ -19,13 +19,13 @@ const postUser = (req, res, next) => {
 };
 
 const patchUser = (req, res, next) => {
-  const {body} = req 
-  const user = req.params
-  updateUser(body, user).then((res)=> {
-    console.log(res)
-  })
-}
+  const { body } = req;
+  const user = req.params;
 
-
-
+  updateUser(body, user)
+    .then((user) => {
+      res.status(200).send({ user });
+    })
+    .catch(next);
+};
 module.exports = { getUser, postUser, patchUser };
