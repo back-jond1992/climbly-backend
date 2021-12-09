@@ -1,6 +1,9 @@
 const db = require("../db/db");
 const { mountainCollection } = require("../database-variable");
-const page = [];
+const { firestore } = require("firebase-admin");
+
+let lastVisibleHill = null;
+
 fetchAllMountains = (sortBy = "hillname", orderBy = "ASC") => {
   if (sortBy !== "hillname" && sortBy !== "feet" && sortBy !== "metres") {
     return Promise.reject({ status: 400, msg: "Bad query" });
@@ -13,13 +16,16 @@ fetchAllMountains = (sortBy = "hillname", orderBy = "ASC") => {
     .collection(`${mountainCollection}`)
     .orderBy(sortBy, orderBy)
     .limit(10)
+    .startAfter(lastVisibleHill || 0)
     .get()
     .then((res) => {
       const mountains = [];
+      const last = res.docs[res.docs.length - 1].data().hillname;
+      console.log(last);
+      lastVisibleHill = last;
       res.docs.map((mountain) => {
         mountains.push(mountain.data());
       });
-
       return mountains;
     });
 };

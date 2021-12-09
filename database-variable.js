@@ -1,4 +1,4 @@
-let mountainCollection = "test-mountains";
+let mountainCollection = "mountains";
 
 let userCollection = "test-users";
 
