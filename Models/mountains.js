@@ -1,6 +1,5 @@
 const db = require("../db/db");
 const { mountainCollection } = require("../database-variable");
-const { firestore } = require("firebase-admin");
 
 let lastVisibleHill = null;
 
@@ -28,6 +27,8 @@ fetchAllMountains = (sortBy = "hillname", orderBy = "ASC") => {
       return mountains;
     });
 };
+
+lastVisibleHill = null;
 
 fetchMountainsByHillNumber = (hill) => {
   const { hillnumber } = hill;
