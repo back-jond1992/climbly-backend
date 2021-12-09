@@ -1,11 +1,12 @@
-const { fetchAllMountains, fetchMountainsByHillNumber } = require("../Models/mountains");
+const {
+  fetchAllMountains,
+  fetchMountainsByHillNumber,
+} = require("../Models/mountains");
 
 const getAllMountains = async (req, res, next) => {
   sortBy = req.query.sortBy;
   orderBy = req.query.orderBy;
-  lastHill = req.query.lastHill;
-
-  fetchAllMountains(sortBy, orderBy, lastHill)
+  fetchAllMountains(sortBy, orderBy)
     .then((mountains) => {
       res.status(200).send({ mountains });
     })

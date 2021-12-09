@@ -16,12 +16,11 @@ fetchAllMountains = (sortBy = "hillname", orderBy = "ASC") => {
     .collection(`${mountainCollection}`)
     .orderBy(sortBy, orderBy)
     .limit(10)
-    .startAfter(lastVisibleHill || 0)
+    .startAfter(lastVisibleHill || null)
     .get()
     .then((res) => {
       const mountains = [];
-      const last = res.docs[res.docs.length - 1].data().hillname;
-      console.log(last);
+      const last = res.docs[res.docs.length - 1];
       lastVisibleHill = last;
       res.docs.map((mountain) => {
         mountains.push(mountain.data());
