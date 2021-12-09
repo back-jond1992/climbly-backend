@@ -21,6 +21,7 @@ fetchAllMountains = (sortBy = "hillname", orderBy = "ASC") => {
       const mountains = [];
       const last = res.docs[res.docs.length - 1];
       lastVisibleHill = last;
+
       res.docs.map((mountain) => {
         mountains.push(mountain.data());
       });
