@@ -1,8 +1,9 @@
 const db = require("../db/db");
 const { mountainCollection } = require("../database-variable");
 
+let lastVisibleHill = null;
+
 fetchAllMountains = (sortBy = "hillname", orderBy = "ASC") => {
-  let lastVisibleHill = null;
   if (sortBy !== "hillname" && sortBy !== "feet" && sortBy !== "metres") {
     return Promise.reject({ status: 400, msg: "Bad query" });
   }
