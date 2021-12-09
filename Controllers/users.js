@@ -22,7 +22,7 @@ const patchUser = (req, res, next) => {
   const {body} = req 
   const user = req.params
   updateUser(body, user).then((res)=> {
-
+    console.log(res)
   })
 }
 

@@ -141,7 +141,7 @@ describe("Mountains API Tests", () => {
     describe("POST /api/users/:userToken happy path", () => {
       it("Status 200: returns new user", () => {
         return request(app)
-          .post("/api/users/user3")
+          .post("/api/users/user2")
           .expect(201)
           .then(({ body }) => {
             expect(body.user).toEqual({
@@ -154,7 +154,7 @@ describe("Mountains API Tests", () => {
       });
     })
     describe('PATCH /api/users/:userToken happy path', () => {
-        it('Status 201: Patches the user object with the new data', () => {
+        it.skip('Status 201: Patches the user object with the new data', () => {
             const testObject = {
                 userToken: "user2",
                 totalFeetClimbed: 1000,

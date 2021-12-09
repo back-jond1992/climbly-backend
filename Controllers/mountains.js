@@ -11,7 +11,6 @@ const getAllMountains = async (req, res, next) => {
 const getMountainByHillNumber = async (req, res, next) => {
   const hillNumber = req.params;
   fetchMountainsByHillNumber(hillNumber).then((mountain) => {
-    console.log(mountain)
     res.status(200).send({ mountain });
   }).catch(next)
 };
