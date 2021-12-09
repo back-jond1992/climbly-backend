@@ -1,7 +1,7 @@
 const db = require("../db/db");
 const { mountainCollection } = require("../database-variable");
-
-fetchAllMountains = (sortBy = "hillname", orderBy = "ASC", startAt = 180) => {
+const page = [];
+fetchAllMountains = (sortBy = "hillname", orderBy = "ASC") => {
   if (sortBy !== "hillname" && sortBy !== "feet" && sortBy !== "metres") {
     return Promise.reject({ status: 400, msg: "Bad query" });
   }
@@ -11,7 +11,6 @@ fetchAllMountains = (sortBy = "hillname", orderBy = "ASC", startAt = 180) => {
 
   return db
     .collection(`${mountainCollection}`)
-    .where("hillnumber", "==", startAt)
     .orderBy(sortBy, orderBy)
     .limit(10)
     .get()
@@ -20,6 +19,7 @@ fetchAllMountains = (sortBy = "hillname", orderBy = "ASC", startAt = 180) => {
       res.docs.map((mountain) => {
         mountains.push(mountain.data());
       });
+
       return mountains;
     });
 };
