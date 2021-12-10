@@ -6,7 +6,8 @@ const {
 const getAllMountains = async (req, res, next) => {
   sortBy = req.query.sortBy;
   orderBy = req.query.orderBy;
-  fetchAllMountains(sortBy, orderBy)
+  lastVisibleHill = req.query.lastVisibleHill;
+  fetchAllMountains(sortBy, orderBy, lastVisibleHill)
     .then((mountains) => {
       res.status(200).send({ mountains });
     })
