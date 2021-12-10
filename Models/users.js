@@ -16,7 +16,7 @@ const fetchUser = (user) => {
     });
 };
 
-const addUser = (user) => {
+const addUser = (user, name, img_url) => {
   const { userToken } = user;
   return db
     .collection(`${userCollection}`)
@@ -26,6 +26,8 @@ const addUser = (user) => {
       totalFeetClimbed: 0,
       noOfHillsClimbed: 0,
       hillsClimbed: [],
+      name: name,
+      img_url: img_url,
     })
     .then(() => {
       return db
