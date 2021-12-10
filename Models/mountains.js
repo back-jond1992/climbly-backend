@@ -1,32 +1,60 @@
 const db = require("../db/db");
 const { mountainCollection } = require("../database-variable");
 
-let lastVisibleHill = null;
+// let lastVisibleHill = null;
 
-fetchAllMountains = (sortBy = "hillname", orderBy = "ASC") => {
+fetchAllMountains = (sortBy = "hillname", orderBy = "ASC", lastVisibleHill = null) => {
   if (sortBy !== "hillname" && sortBy !== "feet" && sortBy !== "metres") {
     return Promise.reject({ status: 400, msg: "Bad query" });
   }
   if (orderBy !== "ASC" && orderBy !== "DESC") {
     return Promise.reject({ status: 400, msg: "Bad query" });
   }
-
-  return db
-    .collection(`${mountainCollection}`)
-    .orderBy(sortBy, orderBy)
-    .limit(10)
-    .startAfter(lastVisibleHill || null)
-    .get()
-    .then((res) => {
-      const mountains = [];
-      const last = res.docs[res.docs.length - 1];
-      lastVisibleHill = last;
-
-      res.docs.map((mountain) => {
-        mountains.push(mountain.data());
-      });
-      return mountains;
-    });
+ 
+  if (lastVisibleHill === null) {
+    return db
+        .collection(`${mountainCollection}`)
+        .orderBy(sortBy, orderBy)
+        .limit(10)
+        .get()
+        .then((res) => {
+          const mountains = [];
+          // const last = res.docs[res.docs.length - 1];
+          // lastVisibleHill = last;
+          res.docs.map((mountain) => {
+            const mountainWithId = mountain.data()
+            mountainWithId.id = mountain.id
+            mountains.push(mountainWithId);
+          });
+          // console.log(mountains[6].id)
+          return mountains;
+        });
+  } else {
+    return db
+      .collection(`${mountainCollection}`)
+      .doc(lastVisibleHill)
+      .get()
+      .then((res)=>{
+        return db
+          .collection(`${mountainCollection}`)
+          .orderBy(sortBy, orderBy)
+          .startAfter(res)
+          .limit(10)
+          .get()
+          .then((res) => {
+            const mountains = [];
+            // const last = res.docs[res.docs.length - 1];
+            // lastVisibleHill = last;
+            res.docs.map((mountain) => {
+              const mountainWithId = mountain.data()
+              mountainWithId.id = mountain.id
+              mountains.push(mountainWithId);
+            });
+            // console.log(mountains[6].id)
+            return mountains;
+          });
+      })
+  }
 };
 
 fetchMountainsByHillNumber = (hill) => {
