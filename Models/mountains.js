@@ -1,8 +1,6 @@
 const db = require("../db/db");
 const { mountainCollection } = require("../database-variable");
 
-// let lastVisibleHill = null;
-
 fetchAllMountains = (
   sortBy = "hillname",
   orderBy = "ASC",
@@ -36,25 +34,29 @@ fetchAllMountains = (
       .doc(lastVisibleHill)
       .get()
       .then((res, err) => {
-        console.log(sortBy, "-----", orderBy);
-        return (
-          db
-            .collection(`${mountainCollection}`)
-            //.orderBy(sortBy, orderBy)
-            .limit(10)
-            .startAfter(res)
-            .get()
-            .then((res) => {
-              console.log(res);
-              const mountains = [];
-              res.docs.map((mountain) => {
-                const mountainWithId = mountain.data();
-                mountainWithId.id = mountain.id;
-                mountains.push(mountainWithId);
-              });
-              return mountains;
-            })
-        );
+        return db
+          .collection(`${mountainCollection}`)
+          .orderBy(sortBy, orderBy)
+          .startAfter(res)
+          .limit(10)
+          .get()
+          .then((res) => {
+            const mountains = [];
+            // line below is to if we wants to have infinite scroll
+            // if (res.docs.length === 0) {
+            //   return fetchAllMountains(
+            //     (sortBy = "hillname"),
+            //     (orderBy = "ASC"),
+            //     (lastVisibleHill = null)
+            //   );
+            // }
+            res.docs.map((mountain) => {
+              const mountainWithId = mountain.data();
+              mountainWithId.id = mountain.id;
+              mountains.push(mountainWithId);
+            });
+            return mountains;
+          });
       })
       .catch((err) => console.log(err));
   }
