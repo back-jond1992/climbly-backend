@@ -20,23 +20,31 @@ const addUser = (user, name, img_url) => {
   const { userToken } = user;
   return db
     .collection(`${userCollection}`)
-    .doc(`${userToken}`)
-    .set({
-      userToken: userToken,
-      totalFeetClimbed: 0,
-      noOfHillsClimbed: 0,
-      hillsClimbed: [],
-      name: name,
-      img_url: img_url,
-    })
-    .then(() => {
-      return db
-        .collection(`${userCollection}`)
-        .where("userToken", "==", userToken)
-        .get()
-        .then((res) => {
-          return res.docs[0].data();
-        });
+    .get()
+    .then((res) => {
+      const arr = res.docs.filter((user) => user.id === userToken);
+      if (arr.length === 0) {
+        return db
+          .collection(`${userCollection}`)
+          .doc(`${userToken}`)
+          .set({
+            userToken: userToken,
+            totalFeetClimbed: 0,
+            noOfHillsClimbed: 0,
+            hillsClimbed: [],
+            name: name,
+            img_url: img_url,
+          })
+          .then(() => {
+            return db
+              .collection(`${userCollection}`)
+              .where("userToken", "==", userToken)
+              .get()
+              .then((res) => {
+                return res.docs[0].data();
+              });
+          });
+      }
     });
 };
 
