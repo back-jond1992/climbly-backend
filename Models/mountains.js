@@ -1,11 +1,7 @@
 const db = require("../db/db");
 const { mountainCollection } = require("../database-variable");
 
-fetchAllMountains = (
-  sortBy = "hillname",
-  orderBy = "ASC",
-  lastVisibleHill = null
-) => {
+fetchAllMountains = (sortBy = "hillname", orderBy = "ASC", lastVisibleHill = null) => {
   if (sortBy !== "hillname" && sortBy !== "feet" && sortBy !== "metres") {
     return Promise.reject({ status: 400, msg: "Bad query" });
   }
@@ -13,7 +9,6 @@ fetchAllMountains = (
     return Promise.reject({ status: 400, msg: "Bad query" });
   }
   if (lastVisibleHill === null) {
-    console.log(sortBy, orderBy, "first pass");
     return db
       .collection(`${mountainCollection}`)
       .orderBy(sortBy, orderBy)
@@ -33,7 +28,7 @@ fetchAllMountains = (
       .collection(`${mountainCollection}`)
       .doc(lastVisibleHill)
       .get()
-      .then((res, err) => {
+      .then((res) => {
         return db
           .collection(`${mountainCollection}`)
           .orderBy(sortBy, orderBy)
@@ -42,14 +37,6 @@ fetchAllMountains = (
           .get()
           .then((res) => {
             const mountains = [];
-            // line below is to if we wants to have infinite scroll
-            // if (res.docs.length === 0) {
-            //   return fetchAllMountains(
-            //     (sortBy = "hillname"),
-            //     (orderBy = "ASC"),
-            //     (lastVisibleHill = null)
-            //   );
-            // }
             res.docs.map((mountain) => {
               const mountainWithId = mountain.data();
               mountainWithId.id = mountain.id;
@@ -57,8 +44,7 @@ fetchAllMountains = (
             });
             return mountains;
           });
-      })
-      .catch((err) => console.log(err));
+      });
   }
 };
 
