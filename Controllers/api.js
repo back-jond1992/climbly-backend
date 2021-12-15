@@ -1,4 +1,3 @@
-const { fetchAPI } = require("../Models/api");
 const data = require("../endpoints.json");
 
 getAPI = (req, res, next) => {
