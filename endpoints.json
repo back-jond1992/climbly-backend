@@ -109,7 +109,7 @@
 
   {
     "GET /api/mountains/:hillnumber": {
-      "description": "takes a hill number as a a param and serves a single mountain",
+      "description": "Takes a hill number as  a parameter and serves a single mountain",
       "queries": [],
       "exampleResponse": {
         "mountain": {
@@ -202,6 +202,57 @@
           "img_page_url": "https://en.wikipedia.org/wiki/File:BenNevis2005.jpg",
           "gridref10": "NN 16670 71279",
           "P500": 1
+        }
+      }
+    }
+  },
+
+  {
+    "GET /api/users/:userToken": {
+      "description": "Takes a user Token as a parameter and serves the corresponding user",
+      "queries": [],
+      "exampleResponse": {
+        "user": {
+          "name": "Mark",
+          "img_url": "",
+          "hillClimbed": ["Skiddaw, Snowdonia"],
+          "noOfHillsClimbed": 2,
+          "totalFeetClimbed": 5304,
+          "userToken": "4*************************3"
+        }
+      }
+    }
+  },
+
+  {
+    "POST /api/users/:userToken": {
+      "description": "Takes a user Token as a parameter and serves the newly created user.",
+      "queries": [],
+      "exampleResponse": {
+        "user": {
+          "name": "Ant",
+          "img_url": "",
+          "hillClimbed": [],
+          "noOfHillsClimbed": 0,
+          "totalFeetClimbed": 0,
+          "userToken": "4*************************7"
+        }
+      }
+    }
+  },
+
+  {
+    "PATCH /api/users/:userToken": {
+      "description": "Takes a user Token as a parameter and a request body and responds with the updated user. * Request body example {'hillClimbed': ['Ben Nevis'],'noOfHillsClimbed': 1, 'totalFeetClimbed': 4411 }.",
+      "queries": [],
+      "exampleResponse": {
+        "user": {
+          "name": "Mark",
+          "img_url": "",
+          "hillClimbed": ["Ben Nevis"],
+          "noOfHillsClimbed": 1,
+          "totalFeetClimbed": 4411,
+          "userToken": "4*************************3"
         }
       }
     }

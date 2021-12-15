@@ -19,7 +19,7 @@ const postUser = (req, res, next) => {
 };
 
 const patchUser = (req, res, next) => {
-  const { body } = req;
+  const body = req.body;
   const user = req.params;
 
   updateUser(body, user)

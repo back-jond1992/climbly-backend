@@ -1,5 +1,3 @@
-const db = require("../db/db");
-const express = require("express");
 const request = require("supertest");
 const app = require("../app");
 
@@ -11,7 +9,6 @@ describe("Mountains API Tests", () => {
           .get("/api/mountains")
           .expect(200)
           .then(({ body }) => {
-            console.log(body.mountains[9]);
             expect(body.mountains.length).toBe(10);
           });
       });
