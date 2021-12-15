@@ -11,7 +11,6 @@ const getUser = (req, res, next) => {
 
 const postUser = (req, res, next) => {
   const user = req.params;
-  console.log(req.body);
   addUser(user, req.body.name, req.body.img_url)
     .then((user) => {
       res.status(201).send({ user });
